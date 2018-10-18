@@ -21,8 +21,6 @@ package-lock.json
 *.zip
 
 # webfont temp
-src/icons/dist/*
-
 .versions
 coverage/
 
