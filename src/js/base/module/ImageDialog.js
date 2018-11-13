@@ -23,17 +23,17 @@ export default class ImageDialog {
       imageLimitation = `<small>${this.lang.image.maximumFileSize + ' : ' + readableSize}</small>`;
     }
 
-    const body = [
-      '<div class="form-group note-form-group note-group-select-from-files">',
-      '<label class="note-form-label">' + this.lang.image.selectFromFiles + '</label>',
-      '<input class="note-image-input note-form-control note-input" ',
+    var body = [
+      '<div class="note-form-group note-group-select-from-files">',
+      '<input id="_insert-file-input" style="display: none" class="note-image-input note-form-control note-input" ',
       ' type="file" name="files" accept="image/*" multiple="multiple" />',
-      imageLimitation,
       '</div>',
-      '<div class="form-group note-group-image-url" style="overflow:auto;">',
       '<label class="note-form-label">' + this.lang.image.url + '</label>',
+      '<div class="form-group note-group-image-url input-group" style="overflow:auto;">',
       '<input class="note-image-url form-control note-form-control note-input ',
       ' col-md-12" type="text" />',
+      '<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon">' + this.lang.image.selectFromFiles + '</label>',
+      imageLimitation,
       '</div>'
     ].join('');
     const buttonClass = 'btn btn-primary note-btn note-btn-primary note-image-btn';
