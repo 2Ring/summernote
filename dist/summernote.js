@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-11-13T12:30Z
+ * Date: 2018-11-22T13:20Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -6073,6 +6073,14 @@ var LinkPopover = /** @class */ (function () {
             var href = $$1(anchor).attr('href');
             this.$popover.find('a').attr('href', href).html(href);
             var pos = dom.posFromPlaceholder(anchor);
+            if (this.options.linkPopupPlacement) {
+                this.$popover.addClass(this.options.linkPopupPlacement);
+                if (this.options.linkPopupPlacement === 'top') {
+                    this.$popover.removeClass('bottom');
+                    pos.top -= this.$popover.outerHeight();
+                    pos.top -= 11;
+                }
+            }
             this.$popover.css({
                 display: 'block',
                 left: pos.left,

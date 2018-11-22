@@ -53,6 +53,14 @@ export default class LinkPopover {
       this.$popover.find('a').attr('href', href).html(href);
 
       const pos = dom.posFromPlaceholder(anchor);
+      if (this.options.linkPopupPlacement) {
+        this.$popover.addClass(this.options.linkPopupPlacement);
+        if (this.options.linkPopupPlacement === 'top') {
+          this.$popover.removeClass('bottom');
+          pos.top -= this.$popover.outerHeight();
+          pos.top -= 11;
+        }
+      }
       this.$popover.css({
         display: 'block',
         left: pos.left,
