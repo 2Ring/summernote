@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-11-22T13:20Z
+ * Date: 2018-12-06T14:13Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -6121,10 +6121,10 @@ var ImageDialog = /** @class */ (function () {
             ' type="file" name="files" accept="image/*" multiple="multiple" />',
             '</div>',
             '<label class="note-form-label">' + this.lang.image.url + '</label>',
-            '<div class="form-group note-group-image-url input-group" style="overflow:auto;">',
+            "<div class=\"form-group note-group-image-url " + (this.options.allowImageFromDisk === false ? '' : 'input-group') + "\" style=\"overflow:auto;\">",
             '<input class="note-image-url form-control note-form-control note-input ',
             ' col-md-12" type="text" />',
-            '<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon">' + this.lang.image.selectFromFiles + '</label>',
+            "<label for=\"_insert-file-input\" class=\"note-form-label btn btn-primary input-group-addon\" " + (this.options.allowImageFromDisk === false ? ' style="display: none"' : '') + ">" + this.lang.image.selectFromFiles + "</label>",
             imageLimitation,
             '</div>'
         ].join('');

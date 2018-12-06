@@ -29,10 +29,10 @@ export default class ImageDialog {
       ' type="file" name="files" accept="image/*" multiple="multiple" />',
       '</div>',
       '<label class="note-form-label">' + this.lang.image.url + '</label>',
-      '<div class="form-group note-group-image-url input-group" style="overflow:auto;">',
+      `<div class="form-group note-group-image-url ${this.options.allowImageFromDisk === false ? '' : 'input-group'}" style="overflow:auto;">`,
       '<input class="note-image-url form-control note-form-control note-input ',
       ' col-md-12" type="text" />',
-      '<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon">' + this.lang.image.selectFromFiles + '</label>',
+      `<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon" ${this.options.allowImageFromDisk === false ? ' style="display: none"' : ''}>${this.lang.image.selectFromFiles}</label>`,
       imageLimitation,
       '</div>'
     ].join('');
