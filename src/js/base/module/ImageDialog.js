@@ -13,7 +13,10 @@ export default class ImageDialog {
   }
 
   initialize() {
-    const $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    let $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    if (this.options.dialogsWrapper) {
+      $container = this.options.dialogsWrapper;
+    }
 
     let imageLimitation = '';
     if (this.options.maximumImageFileSize) {
@@ -45,6 +48,10 @@ export default class ImageDialog {
       body: body,
       footer: footer
     }).render().appendTo($container);
+
+    if (!this.options.dialogsInBody) {
+      this.$dialog.css('position', 'absolute');
+    }
   }
 
   destroy() {

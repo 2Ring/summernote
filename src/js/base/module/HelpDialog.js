@@ -13,7 +13,10 @@ export default class HelpDialog {
   }
 
   initialize() {
-    const $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    let $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    if (this.options.dialogsWrapper) {
+      $container = this.options.dialogsWrapper;
+    }
 
     const body = [
       '<p class="text-center">',
@@ -35,6 +38,10 @@ export default class HelpDialog {
         });
       }
     }).render().appendTo($container);
+
+    if (!this.options.dialogsInBody) {
+      this.$dialog.css('position', 'absolute');
+    }
   }
 
   destroy() {

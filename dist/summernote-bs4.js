@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-12-06T14:13Z
+ * Date: 2018-12-12T12:17Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -5899,6 +5899,9 @@ var LinkDialog = /** @class */ (function () {
     }
     LinkDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var body = [
             '<div class="form-group note-form-group">',
             "<label class=\"note-form-label\">" + this.lang.link.textToDisplay + "</label>",
@@ -5925,6 +5928,9 @@ var LinkDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     LinkDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6112,6 +6118,9 @@ var ImageDialog = /** @class */ (function () {
     }
     ImageDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var imageLimitation = '';
         if (this.options.maximumImageFileSize) {
             var unit = Math.floor(Math.log(this.options.maximumImageFileSize) / Math.log(1024));
@@ -6140,6 +6149,9 @@ var ImageDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     ImageDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6336,6 +6348,9 @@ var VideoDialog = /** @class */ (function () {
     }
     VideoDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var body = [
             '<div class="form-group note-form-group row-fluid">',
             "<label class=\"note-form-label\">" + this.lang.video.url + " <small class=\"text-muted\">" + this.lang.video.providers + "</small></label>",
@@ -6350,6 +6365,9 @@ var VideoDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     VideoDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6516,6 +6534,9 @@ var HelpDialog = /** @class */ (function () {
     }
     HelpDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var body = [
             '<p class="text-center">',
             '<a href="http://summernote.org/" target="_blank">Summernote 0.8.10</a> · ',
@@ -6535,6 +6556,9 @@ var HelpDialog = /** @class */ (function () {
                 });
             }
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     HelpDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
