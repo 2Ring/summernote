@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-12-12T12:17Z
+ * Date: 2018-12-12T14:08Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -5928,7 +5928,7 @@ var LinkDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
-        if (!this.options.dialogsInBody) {
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
             this.$dialog.css('position', 'absolute');
         }
     };
@@ -6149,7 +6149,7 @@ var ImageDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
-        if (!this.options.dialogsInBody) {
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
             this.$dialog.css('position', 'absolute');
         }
     };
@@ -6365,7 +6365,7 @@ var VideoDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
-        if (!this.options.dialogsInBody) {
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
             this.$dialog.css('position', 'absolute');
         }
     };
@@ -6556,7 +6556,7 @@ var HelpDialog = /** @class */ (function () {
                 });
             }
         }).render().appendTo($container);
-        if (!this.options.dialogsInBody) {
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
             this.$dialog.css('position', 'absolute');
         }
     };

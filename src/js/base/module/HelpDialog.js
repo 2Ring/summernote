@@ -39,7 +39,7 @@ export default class HelpDialog {
       }
     }).render().appendTo($container);
 
-    if (!this.options.dialogsInBody) {
+    if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
       this.$dialog.css('position', 'absolute');
     }
   }
