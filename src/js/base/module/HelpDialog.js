@@ -18,13 +18,13 @@ export default class HelpDialog {
       $container = this.options.dialogsWrapper;
     }
 
-    const body = [
+    const body = this.options.showHelpLinks ? [
       '<p class="text-center">',
       '<a href="http://summernote.org/" target="_blank">Summernote @@VERSION@@</a> · ',
       '<a href="https://github.com/summernote/summernote" target="_blank">Project</a> · ',
       '<a href="https://github.com/summernote/summernote/issues" target="_blank">Issues</a>',
       '</p>'
-    ].join('');
+    ].join('') : '';
 
     this.$dialog = this.ui.dialog({
       title: this.lang.options.help,

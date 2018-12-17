@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-12-12T14:08Z
+ * Date: 2018-12-17T11:25Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -6533,13 +6533,13 @@ var HelpDialog = /** @class */ (function () {
         if (this.options.dialogsWrapper) {
             $container = this.options.dialogsWrapper;
         }
-        var body = [
+        var body = this.options.showHelpLinks ? [
             '<p class="text-center">',
             '<a href="http://summernote.org/" target="_blank">Summernote 0.8.10</a> · ',
             '<a href="https://github.com/summernote/summernote" target="_blank">Project</a> · ',
             '<a href="https://github.com/summernote/summernote/issues" target="_blank">Issues</a>',
             '</p>'
-        ].join('');
+        ].join('') : '';
         this.$dialog = this.ui.dialog({
             title: this.lang.options.help,
             fade: this.options.dialogsFade,
