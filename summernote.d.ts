@@ -5,19 +5,34 @@
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.7
 
-/// <reference types="jquery"/>
-
 declare global {
 	namespace Summernote {
+		type Node = Element | Text | Comment | DocumentFragment;
 		interface Options {
+			dialogsWrapper?: JQuery;
+			allowImageFromDisk?: boolean;
 			airMode?: boolean;
-			callbacks?: any; // todo
+			buttons?: any;
+			linkPopupPlacement?: string,
+			callbacks?: {
+				onInit?: (summernote: JQuery) => void;
+				onEnter?: (e: JQueryEventObject) => void;
+				onFocus?: () => void;
+				onBlur?: () => void;
+				onKeyup?: (e: JQueryEventObject) => void;
+				onKeydown?: (e: JQueryEventObject) => void;
+				onPaste?: (e: JQueryEventObject) => void;
+				onImageUpload?: (files: any) => void;
+				onChange?: (contents: any, $editable: any) => void;
+			};
 			codemirror?: CodemirrorOptions;
 			colors?: colorsDef;
 			dialogsInBody?: boolean;
 			dialogsFade?: boolean;
 			direction?: string;
 			disableDragAndDrop?: boolean;
+			disableResizeEditor?: boolean;
+			disableLinkTarget?: boolean;
 			focus?: boolean;
 			fontNames?: string[];
 			fontNamesIgnoreCheck?: string[];
@@ -41,6 +56,7 @@ declare global {
 			tableClassName?: string;
 			textareaAutoSync?: boolean;
 			toolbar?: toolbarDef;
+			tooltip?: boolean;
 			width?: number;
 		}
 
@@ -54,19 +70,19 @@ declare global {
 		type toolbarInsertGroupOptions = 'link' | 'picture' | 'hr';
 		type toolbarViewGroupOptions = 'fullscreen' | 'codeview';
 		type toolbarHelpGroupOptions = 'help';
-		// type toolbarDef = [string, string[]][]
-		type toolbarDef = [
-			['style', toolbarStyleGroupOptions[]]
-			| ['font', toolbarFontGroupOptions[]]
-			| ['fontsize', toolbarFontsizeGroupOptions[]]
-			| ['color', toolbarColorGroupOptions[]]
-			| ['para', toolbarParaGroupOptions[]]
-			| ['height', toolbarHeightGroupOptions[]]
-			| ['table', toolbarTableGroupOptions[]]
-			| ['insert', toolbarInsertGroupOptions[]]
-			| ['view', toolbarViewGroupOptions[]]
-			| ['help', toolbarHelpGroupOptions[]]
-		];
+		type toolbarDef = [string, string[]][]
+		// type toolbarDef = [
+		// 	['style', toolbarStyleGroupOptions[]]
+		// 	| ['font', toolbarFontGroupOptions[]]
+		// 	| ['fontsize', toolbarFontsizeGroupOptions[]]
+		// 	| ['color', toolbarColorGroupOptions[]]
+		// 	| ['para', toolbarParaGroupOptions[]]
+		// 	| ['height', toolbarHeightGroupOptions[]]
+		// 	| ['table', toolbarTableGroupOptions[]]
+		// 	| ['insert', toolbarInsertGroupOptions[]]
+		// 	| ['view', toolbarViewGroupOptions[]]
+		// 	| ['help', toolbarHelpGroupOptions[]]
+		// ];
 
 		type colorsDef = Array<[string[]]>;
 		type styleTagsOptions = 'p' | 'blockquote' | 'pre' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
@@ -101,7 +117,7 @@ declare global {
 			match: RegExp;
 			search: (keyword: string, callback: (plausibleItems: string[]) => void) => void;
 			template?: (item: string) => htmlElement;
-			content?: (item: string) => htmlElement | JQuery.Node;
+			content?: (item: string) => htmlElement | Node;
 		}
 
 		interface CodemirrorOptions {
@@ -154,7 +170,7 @@ declare global {
 			newWindow: boolean;
 		}
 
-		type EditImageCallback = ($image: JQuery.Node) => void;
+		type EditImageCallback = ($image: Node) => void;
 	}
 
 	interface JQuery {
@@ -163,11 +179,12 @@ declare global {
 		summernote(options?: Summernote.Options): JQuery;
 		summernote(command: string, markupString: string): JQuery;
 		summernote(command: string, value: number): JQuery;
-		summernote(command: string, node: JQuery.Node): JQuery;
+		summernote(command: string, node: Summernote.Node): JQuery;
 		summernote(command: string, url: string, filename?: (string | Summernote.EditImageCallback)): JQuery;
 
 		summernote(command: 'destroy'): JQuery;
-		summernote(command: 'code', markupStr?: string): JQuery;
+		summernote(command: 'code'): string;
+		summernote(command: 'code', markupStr: string): JQuery;
 		summernote(command: 'editor.pasteHTML' | 'pasteHTML', markup: string): JQuery;
 
 		// Basic API
@@ -181,6 +198,7 @@ declare global {
 		summernote(command: 'reset'): JQuery;
 		summernote(command: 'disable'): JQuery;
 		summernote(command: 'enable'): JQuery;
+		summernote(command: 'editor.afterCommand' | 'afterCommand', preventTrigger?: boolean): void; // Saves current snapshot to history and triggers onChange. Triggers automatically after all events.
 		// Font style API
 		summernote(fontStyle: 'editor.bold' | 'bold'): JQuery;
 		summernote(fontStyle: 'editor.italic' | 'italic'): JQuery;
@@ -207,12 +225,12 @@ declare global {
 		summernote(command: 'formatH1'): JQuery;
 		summernote(command: 'formatH2'): JQuery;
 		summernote(command: 'formatH3'): JQuery;
-			summernote(command: 'formatH4'): JQuery;
+		summernote(command: 'formatH4'): JQuery;
 		summernote(command: 'formatH5'): JQuery;
 		summernote(command: 'formatH6'): JQuery;
 		// Insertion API
 		summernote(command: 'editor.insertImage' | 'insertImage', url: string, filename?: (string | Summernote.EditImageCallback)): JQuery;
-		summernote(command: 'editor.insertNode' | 'insertNode', node: JQuery.Node): JQuery;
+		summernote(command: 'editor.insertNode' | 'insertNode', node: Summernote.Node): JQuery;
 		summernote(command: 'editor.insertText' | 'insertText', text: string): JQuery;
 		summernote(command: 'createLink', options: Summernote.CreateLinkOptions): JQuery;
 		// TODO: Callbacks
@@ -234,6 +252,25 @@ declare global {
 		// editor.currentStyle ??
 		// editor.getLinkInfo ??
 		// editor.getSelectedText ??
+	}
+
+	interface JQueryStatic {
+		summernote: {
+			ui: {
+				button: (buttonProperties: SummernoteButtonProperties) => SummernoteButton;
+			}
+		}
+	}
+
+	interface SummernoteButtonProperties {
+		contents: string;
+		className?: string;
+		tooltip?: string;
+		click?: () => void;
+	}
+
+	interface SummernoteButton {
+		render: () => JQuery;
 	}
 }
 
