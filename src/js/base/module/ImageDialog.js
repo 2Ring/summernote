@@ -13,7 +13,10 @@ export default class ImageDialog {
   }
 
   initialize() {
-    const $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    let $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    if (this.options.dialogsWrapper) {
+      $container = this.options.dialogsWrapper;
+    }
 
     let imageLimitation = '';
     if (this.options.maximumImageFileSize) {
@@ -29,10 +32,10 @@ export default class ImageDialog {
       ' type="file" name="files" accept="image/*" multiple="multiple" />',
       '</div>',
       '<label class="note-form-label">' + this.lang.image.url + '</label>',
-      '<div class="form-group note-group-image-url input-group" style="overflow:auto;">',
+      `<div class="form-group note-group-image-url ${this.options.allowImageFromDisk === false ? '' : 'input-group'}" style="overflow:auto;">`,
       '<input class="note-image-url form-control note-form-control note-input ',
       ' col-md-12" type="text" />',
-      '<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon">' + this.lang.image.selectFromFiles + '</label>',
+      `<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon" ${this.options.allowImageFromDisk === false ? ' style="display: none"' : ''}>${this.lang.image.selectFromFiles}</label>`,
       imageLimitation,
       '</div>'
     ].join('');
@@ -45,6 +48,10 @@ export default class ImageDialog {
       body: body,
       footer: footer
     }).render().appendTo($container);
+
+    if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+      this.$dialog.css('position', 'absolute');
+    }
   }
 
   destroy() {

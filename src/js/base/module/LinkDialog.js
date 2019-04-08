@@ -16,7 +16,10 @@ export default class LinkDialog {
   }
 
   initialize() {
-    const $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    let $container = this.options.dialogsInBody ? this.$body : this.$editor;
+    if (this.options.dialogsWrapper) {
+      $container = this.options.dialogsWrapper;
+    }
 
     const body = [
       '<div class="form-group note-form-group">',
@@ -46,6 +49,10 @@ export default class LinkDialog {
       body: body,
       footer: footer
     }).render().appendTo($container);
+
+    if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+      this.$dialog.css('position', 'absolute');
+    }
   }
 
   destroy() {

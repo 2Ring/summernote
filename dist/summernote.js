@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2018-11-13T12:14Z
+ * Date: 2019-04-08T12:00Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -4506,7 +4506,8 @@ var Clipboard = /** @class */ (function () {
     Clipboard.prototype.pasteByEvent = function (event) {
         var clipboardData = event.originalEvent.clipboardData;
         if (clipboardData && clipboardData.items && clipboardData.items.length) {
-            var item = lists.head(clipboardData.items);
+            // paste img file
+            var item = clipboardData.items.length > 1 ? clipboardData.items[1] : lists.head(clipboardData.items);
             if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
                 this.context.invoke('editor.insertImagesOrCallback', [item.getAsFile()]);
             }
@@ -5997,6 +5998,9 @@ var LinkDialog = /** @class */ (function () {
     }
     LinkDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var body = [
             '<div class="form-group note-form-group">',
             "<label class=\"note-form-label\">" + this.lang.link.textToDisplay + "</label>",
@@ -6023,6 +6027,9 @@ var LinkDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     LinkDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6175,6 +6182,14 @@ var LinkPopover = /** @class */ (function () {
             var href = $$1(anchor).attr('href');
             this.$popover.find('a').attr('href', href).html(href);
             var pos = dom.posFromPlaceholder(anchor);
+            if (this.options.linkPopupPlacement) {
+                this.$popover.addClass(this.options.linkPopupPlacement);
+                if (this.options.linkPopupPlacement === 'top') {
+                    this.$popover.removeClass('bottom');
+                    pos.top -= this.$popover.outerHeight();
+                    pos.top -= 11;
+                }
+            }
             this.$popover.css({
                 display: 'block',
                 left: pos.left,
@@ -6202,6 +6217,9 @@ var ImageDialog = /** @class */ (function () {
     }
     ImageDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var imageLimitation = '';
         if (this.options.maximumImageFileSize) {
             var unit = Math.floor(Math.log(this.options.maximumImageFileSize) / Math.log(1024));
@@ -6215,10 +6233,10 @@ var ImageDialog = /** @class */ (function () {
             ' type="file" name="files" accept="image/*" multiple="multiple" />',
             '</div>',
             '<label class="note-form-label">' + this.lang.image.url + '</label>',
-            '<div class="form-group note-group-image-url input-group" style="overflow:auto;">',
+            "<div class=\"form-group note-group-image-url " + (this.options.allowImageFromDisk === false ? '' : 'input-group') + "\" style=\"overflow:auto;\">",
             '<input class="note-image-url form-control note-form-control note-input ',
             ' col-md-12" type="text" />',
-            '<label for="_insert-file-input" class="note-form-label btn btn-primary input-group-addon">' + this.lang.image.selectFromFiles + '</label>',
+            "<label for=\"_insert-file-input\" class=\"note-form-label btn btn-primary input-group-addon\" " + (this.options.allowImageFromDisk === false ? ' style="display: none"' : '') + ">" + this.lang.image.selectFromFiles + "</label>",
             imageLimitation,
             '</div>'
         ].join('');
@@ -6230,6 +6248,9 @@ var ImageDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     ImageDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6439,6 +6460,9 @@ var VideoDialog = /** @class */ (function () {
     }
     VideoDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
         var body = [
             '<div class="form-group note-form-group row-fluid">',
             "<label class=\"note-form-label\">" + this.lang.video.url + " <small class=\"text-muted\">" + this.lang.video.providers + "</small></label>",
@@ -6453,6 +6477,9 @@ var VideoDialog = /** @class */ (function () {
             body: body,
             footer: footer
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     VideoDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
@@ -6629,13 +6656,16 @@ var HelpDialog = /** @class */ (function () {
     }
     HelpDialog.prototype.initialize = function () {
         var $container = this.options.dialogsInBody ? this.$body : this.$editor;
-        var body = [
+        if (this.options.dialogsWrapper) {
+            $container = this.options.dialogsWrapper;
+        }
+        var body = this.options.showHelpLinks ? [
             '<p class="text-center">',
             '<a href="http://summernote.org/" target="_blank">Summernote 0.8.10</a> · ',
             '<a href="https://github.com/summernote/summernote" target="_blank">Project</a> · ',
             '<a href="https://github.com/summernote/summernote/issues" target="_blank">Issues</a>',
             '</p>'
-        ].join('');
+        ].join('') : '';
         this.$dialog = this.ui.dialog({
             title: this.lang.options.help,
             fade: this.options.dialogsFade,
@@ -6648,6 +6678,9 @@ var HelpDialog = /** @class */ (function () {
                 });
             }
         }).render().appendTo($container);
+        if (!this.options.dialogsInBody && this.options.dialogsWrapper) {
+            this.$dialog.css('position', 'absolute');
+        }
     };
     HelpDialog.prototype.destroy = function () {
         this.ui.hideDialog(this.$dialog);
