@@ -5,7 +5,7 @@
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
  *
- * Date: 2019-04-08T12:05Z
+ * Date: 2020-02-13T08:24Z
  */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery')) :
@@ -2936,7 +2936,7 @@ var WrappedRange = /** @class */ (function () {
         var contentsContainer = $$1('<div></div>').html(markup)[0];
         var childNodes = lists.from(contentsContainer.childNodes);
         var rng = this.wrapBodyInlineWithPara().deleteContents();
-        if (rng.so > 0) {
+        if (rng.so >= 0) {
             childNodes = childNodes.reverse();
         }
         childNodes = childNodes.map(function (childNode) {

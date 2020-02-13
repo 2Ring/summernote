@@ -535,7 +535,7 @@ class WrappedRange {
     let childNodes = lists.from(contentsContainer.childNodes);
     const rng = this.wrapBodyInlineWithPara().deleteContents();
 
-    if (rng.so > 0) {
+    if (rng.so >= 0) {
       childNodes = childNodes.reverse();
     }
     childNodes = childNodes.map(function(childNode) {
